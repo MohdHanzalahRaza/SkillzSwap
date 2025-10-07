@@ -1224,3 +1224,24 @@ section {
         flex: 0 0 calc(100% - var(--space-xl));
     }
 }
+/* Fix small mobile screens */
+@media (max-width: 375px) {
+    .hero-title {
+        font-size: 2rem;
+    }
+    
+    .nav-container {
+        padding: var(--space-sm) var(--space-md);
+    }
+    
+    .skill-card {
+        min-width: 280px;
+    }
+}
+
+/* Fix tablet landscape */
+@media (min-width: 768px) and (max-width: 1024px) {
+    .skills-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
