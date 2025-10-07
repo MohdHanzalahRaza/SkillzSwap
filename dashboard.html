@@ -1,0 +1,822 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard - SwapSkillz</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        .dashboard-container {
+            display: grid;
+            grid-template-columns: 280px 1fr;
+            min-height: 100vh;
+            padding-top: 70px;
+        }
+
+        .sidebar {
+            background: var(--bg-secondary);
+            padding: var(--space-2xl) var(--space-lg);
+            border-right: 1px solid var(--border);
+            position: sticky;
+            top: 70px;
+            height: calc(100vh - 70px);
+            overflow-y: auto;
+        }
+
+        .sidebar-menu {
+            list-style: none;
+            display: flex;
+            flex-direction: column;
+            gap: var(--space-sm);
+        }
+
+        .sidebar-item {
+            padding: var(--space-md);
+            border-radius: var(--radius);
+            display: flex;
+            align-items: center;
+            gap: var(--space-md);
+            cursor: pointer;
+            transition: var(--transition);
+            color: var(--text-primary);
+            text-decoration: none;
+        }
+
+        .sidebar-item:hover,
+        .sidebar-item.active {
+            background: var(--primary);
+            color: white;
+        }
+
+        .sidebar-item i {
+            width: 20px;
+        }
+
+        .dashboard-content {
+            padding: var(--space-2xl);
+        }
+
+        .dashboard-header {
+            margin-bottom: var(--space-2xl);
+        }
+
+        .dashboard-header h1 {
+            font-family: 'Poppins', sans-serif;
+            font-size: 2rem;
+            margin-bottom: var(--space-sm);
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: var(--space-lg);
+            margin-bottom: var(--space-2xl);
+        }
+
+        .stat-card {
+            background: var(--bg-primary);
+            padding: var(--space-xl);
+            border-radius: var(--radius-lg);
+            box-shadow: var(--shadow);
+            display: flex;
+            align-items: center;
+            gap: var(--space-lg);
+        }
+
+        .stat-icon {
+            width: 60px;
+            height: 60px;
+            border-radius: var(--radius-lg);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+        }
+
+        .stat-icon.primary {
+            background: rgba(99, 102, 241, 0.1);
+            color: var(--primary);
+        }
+
+        .stat-icon.success {
+            background: rgba(16, 185, 129, 0.1);
+            color: var(--accent);
+        }
+
+        .stat-icon.warning {
+            background: rgba(245, 158, 11, 0.1);
+            color: var(--secondary);
+        }
+
+        .stat-icon.danger {
+            background: rgba(239, 68, 68, 0.1);
+            color: var(--danger);
+        }
+
+        .stat-info h3 {
+            font-size: 2rem;
+            font-weight: 700;
+            margin-bottom: var(--space-xs);
+        }
+
+        .stat-label {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+        }
+
+        .profile-section {
+            background: var(--bg-primary);
+            padding: var(--space-2xl);
+            border-radius: var(--radius-xl);
+            box-shadow: var(--shadow);
+            margin-bottom: var(--space-2xl);
+        }
+
+        .profile-header {
+            display: flex;
+            align-items: center;
+            gap: var(--space-xl);
+            margin-bottom: var(--space-2xl);
+            flex-wrap: wrap;
+        }
+
+        .profile-avatar {
+            position: relative;
+        }
+
+        .profile-avatar img {
+            width: 120px;
+            height: 120px;
+            border-radius: var(--radius-full);
+            object-fit: cover;
+            border: 4px solid var(--primary);
+        }
+
+        .avatar-badge {
+            position: absolute;
+            bottom: 5px;
+            right: 5px;
+            width: 30px;
+            height: 30px;
+            background: var(--accent);
+            border-radius: var(--radius-full);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            border: 3px solid var(--bg-primary);
+        }
+
+        .profile-info h2 {
+            font-size: 1.5rem;
+            margin-bottom: var(--space-xs);
+        }
+
+        .profile-meta {
+            display: flex;
+            gap: var(--space-lg);
+            color: var(--text-secondary);
+            margin-top: var(--space-sm);
+        }
+
+        .section-title {
+            font-size: 1.25rem;
+            font-weight: 600;
+            margin-bottom: var(--space-lg);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .skills-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: var(--space-md);
+            margin-bottom: var(--space-xl);
+        }
+
+        .skill-tag {
+            padding: var(--space-sm) var(--space-lg);
+            background: var(--bg-tertiary);
+            border-radius: var(--radius-full);
+            display: flex;
+            align-items: center;
+            gap: var(--space-sm);
+            transition: var(--transition);
+        }
+
+        .skill-tag:hover {
+            background: var(--primary);
+            color: white;
+        }
+
+        .requests-list {
+            display: flex;
+            flex-direction: column;
+            gap: var(--space-lg);
+        }
+
+        .request-card {
+            background: var(--bg-primary);
+            padding: var(--space-xl);
+            border-radius: var(--radius-lg);
+            box-shadow: var(--shadow);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: var(--space-lg);
+        }
+
+        .request-user {
+            display: flex;
+            align-items: center;
+            gap: var(--space-md);
+        }
+
+        .request-avatar {
+            width: 50px;
+            height: 50px;
+            border-radius: var(--radius-full);
+            object-fit: cover;
+        }
+
+        .request-info h4 {
+            margin-bottom: var(--space-xs);
+        }
+
+        .request-meta {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+        }
+
+        .request-actions {
+            display: flex;
+            gap: var(--space-sm);
+        }
+
+        .status-badge {
+            padding: var(--space-xs) var(--space-md);
+            border-radius: var(--radius-full);
+            font-size: 0.85rem;
+            font-weight: 500;
+        }
+
+        .status-pending {
+            background: rgba(245, 158, 11, 0.1);
+            color: var(--secondary);
+        }
+
+        .status-accepted {
+            background: rgba(16, 185, 129, 0.1);
+            color: var(--accent);
+        }
+
+        .status-declined {
+            background: rgba(239, 68, 68, 0.1);
+            color: var(--danger);
+        }
+
+        .btn-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: var(--radius-full);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border: none;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .btn-icon.accept {
+            background: rgba(16, 185, 129, 0.1);
+            color: var(--accent);
+        }
+
+        .btn-icon.decline {
+            background: rgba(239, 68, 68, 0.1);
+            color: var(--danger);
+        }
+
+        .btn-icon:hover {
+            transform: scale(1.1);
+        }
+
+        @media (max-width: 968px) {
+            .dashboard-container {
+                grid-template-columns: 1fr;
+            }
+
+            .sidebar {
+                position: relative;
+                height: auto;
+            }
+
+            .sidebar-menu {
+                flex-direction: row;
+                overflow-x: auto;
+            }
+
+            .sidebar-item {
+                white-space: nowrap;
+            }
+        }
+    </style>
+</head>
+<body>
+    <button class="theme-toggle" id="themeToggle">
+        <i class="fas fa-moon"></i>
+    </button>
+
+    <!-- Navigation -->
+    <nav class="navbar" id="navbar">
+        <div class="nav-container">
+            <div class="nav-logo" onclick="window.location.href='index.html'">
+                <i class="fas fa-sync-alt"></i>
+                <span>SwapSkillz</span>
+            </div>
+            
+            <div class="nav-menu" id="navMenu">
+                <a href="index.html" class="nav-link">Home</a>
+                <a href="browse.html" class="nav-link">Browse Skills</a>
+                <a href="dashboard.html" class="nav-link active">Dashboard</a>
+                <a href="#" class="nav-link">Messages</a>
+            </div>
+
+            <div class="nav-actions">
+                <button class="btn btn-outline">Logout</button>
+            </div>
+
+            <button class="nav-toggle" id="navToggle">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
+        </div>
+    </nav>
+
+    <div class="dashboard-container">
+        <!-- Sidebar -->
+        <aside class="sidebar">
+            <ul class="sidebar-menu">
+                <li><a href="#overview" class="sidebar-item active" data-tab="overview">
+                    <i class="fas fa-chart-line"></i>
+                    <span>Overview</span>
+                </a></li>
+                <li><a href="#profile" class="sidebar-item" data-tab="profile">
+                    <i class="fas fa-user"></i>
+                    <span>My Profile</span>
+                </a></li>
+                <li><a href="#requests" class="sidebar-item" data-tab="requests">
+                    <i class="fas fa-exchange-alt"></i>
+                    <span>Requests</span>
+                </a></li>
+                <li><a href="#messages" class="sidebar-item" data-tab="messages">
+                    <i class="fas fa-envelope"></i>
+                    <span>Messages</span>
+                </a></li>
+                <li><a href="#reviews" class="sidebar-item" data-tab="reviews">
+                    <i class="fas fa-star"></i>
+                    <span>Reviews</span>
+                </a></li>
+                <li><a href="#settings" class="sidebar-item" data-tab="settings">
+                    <i class="fas fa-cog"></i>
+                    <span>Settings</span>
+                </a></li>
+            </ul>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="dashboard-content">
+            <!-- Overview Tab -->
+            <div class="tab-content active" id="overview">
+                <div class="dashboard-header">
+                    <h1>Welcome back, Priya! 👋</h1>
+                    <p style="color: var(--text-secondary);">Here's what's happening with your skill swaps</p>
+                </div>
+
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <div class="stat-icon primary">
+                            <i class="fas fa-handshake"></i>
+                        </div>
+                        <div class="stat-info">
+                            <h3>24</h3>
+                            <p class="stat-label">Successful Swaps</p>
+                        </div>
+                    </div>
+
+                    <div class="stat-card">
+                        <div class="stat-icon warning">
+                            <i class="fas fa-clock"></i>
+                        </div>
+                        <div class="stat-info">
+                            <h3>5</h3>
+                            <p class="stat-label">Pending Requests</p>
+                        </div>
+                    </div>
+
+                    <div class="stat-card">
+                        <div class="stat-icon success">
+                            <i class="fas fa-star"></i>
+                        </div>
+                        <div class="stat-info">
+                            <h3>4.8</h3>
+                            <p class="stat-label">Average Rating</p>
+                        </div>
+                    </div>
+
+                    <div class="stat-card">
+                        <div class="stat-icon danger">
+                            <i class="fas fa-graduation-cap"></i>
+                        </div>
+                        <div class="stat-info">
+                            <h3>12</h3>
+                            <p class="stat-label">Skills Learning</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="profile-section">
+                    <h3 class="section-title">Recent Requests</h3>
+                    <div class="requests-list" id="recentRequests"></div>
+                </div>
+            </div>
+
+            <!-- Profile Tab -->
+            <div class="tab-content" id="profile">
+                <div class="dashboard-header">
+                    <h1>My Profile</h1>
+                </div>
+
+                <div class="profile-section">
+                    <div class="profile-header">
+                        <div class="profile-avatar">
+                            <img src="https://i.pravatar.cc/150?img=5" alt="Profile">
+                            <div class="avatar-badge">
+                                <i class="fas fa-check"></i>
+                            </div>
+                        </div>
+                        <div class="profile-info">
+                            <h2>Priya Sharma</h2>
+                            <p style="color: var(--text-secondary);">Full Stack Developer | Web Designer</p>
+                            <div class="profile-meta">
+                                <span><i class="fas fa-map-marker-alt"></i> Bhopal, India</span>
+                                <span><i class="fas fa-calendar"></i> Joined Oct 2024</span>
+                                <span><i class="fas fa-star"></i> 4.8 Rating</span>
+                            </div>
+                        </div>
+                        <button class="btn btn-primary">Edit Profile</button>
+                    </div>
+
+                    <div class="profile-bio">
+                        <h3 class="section-title">About Me</h3>
+                        <p style="color: var(--text-secondary); line-height: 1.8;">
+                            I'm a passionate full-stack developer with 5 years of experience in React, Node.js, and modern web technologies. 
+                            I love teaching and learning new skills. Currently looking to improve my graphic design skills while sharing 
+                            my programming knowledge with others.
+                        </p>
+                    </div>
+                </div>
+
+                <div class="profile-section">
+                    <h3 class="section-title">
+                        Skills I Can Teach
+                        <button class="btn btn-outline" style="padding: 0.5rem 1rem; font-size: 0.9rem;">
+                            <i class="fas fa-plus"></i> Add Skill
+                        </button>
+                    </h3>
+                    <div class="skills-container">
+                        <div class="skill-tag">
+                            <i class="fas fa-code"></i>
+                            <span>React.js</span>
+                        </div>
+                        <div class="skill-tag">
+                            <i class="fas fa-code"></i>
+                            <span>Node.js</span>
+                        </div>
+                        <div class="skill-tag">
+                            <i class="fas fa-database"></i>
+                            <span>MongoDB</span>
+                        </div>
+                        <div class="skill-tag">
+                            <i class="fas fa-laptop-code"></i>
+                            <span>JavaScript</span>
+                        </div>
+                        <div class="skill-tag">
+                            <i class="fas fa-server"></i>
+                            <span>REST APIs</span>
+                        </div>
+                    </div>
+
+                    <h3 class="section-title">
+                        Skills I Want to Learn
+                        <button class="btn btn-outline" style="padding: 0.5rem 1rem; font-size: 0.9rem;">
+                            <i class="fas fa-plus"></i> Add Skill
+                        </button>
+                    </h3>
+                    <div class="skills-container">
+                        <div class="skill-tag">
+                            <i class="fas fa-palette"></i>
+                            <span>Graphic Design</span>
+                        </div>
+                        <div class="skill-tag">
+                            <i class="fas fa-camera"></i>
+                            <span>Photography</span>
+                        </div>
+                        <div class="skill-tag">
+                            <i class="fas fa-video"></i>
+                            <span>Video Editing</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Requests Tab -->
+            <div class="tab-content" id="requests">
+                <div class="dashboard-header">
+                    <h1>Skill Swap Requests</h1>
+                    <p style="color: var(--text-secondary);">Manage your incoming and outgoing requests</p>
+                </div>
+
+                <div class="profile-section">
+                    <h3 class="section-title">Received Requests (5)</h3>
+                    <div class="requests-list" id="receivedRequests"></div>
+                </div>
+
+                <div class="profile-section">
+                    <h3 class="section-title">Sent Requests (3)</h3>
+                    <div class="requests-list" id="sentRequests"></div>
+                </div>
+            </div>
+
+            <!-- Messages Tab -->
+            <div class="tab-content" id="messages">
+                <div class="dashboard-header">
+                    <h1>Messages</h1>
+                </div>
+                <div class="profile-section" style="text-align: center; padding: 4rem;">
+                    <i class="fas fa-comments" style="font-size: 4rem; color: var(--text-tertiary); margin-bottom: 1rem;"></i>
+                    <h3>Coming Soon!</h3>
+                    <p style="color: var(--text-secondary);">Real-time messaging feature will be available soon.</p>
+                </div>
+            </div>
+
+            <!-- Reviews Tab -->
+            <div class="tab-content" id="reviews">
+                <div class="dashboard-header">
+                    <h1>Reviews & Ratings</h1>
+                </div>
+                <div class="profile-section">
+                    <div style="text-align: center; padding: 2rem;">
+                        <div style="font-size: 4rem; font-weight: 700; color: var(--primary); margin-bottom: 1rem;">4.8</div>
+                        <div style="color: var(--secondary); font-size: 1.5rem; margin-bottom: 0.5rem;">★★★★★</div>
+                        <p style="color: var(--text-secondary);">Based on 24 reviews</p>
+                    </div>
+                </div>
+
+                <div class="profile-section">
+                    <h3 class="section-title">Recent Reviews</h3>
+                    <div class="requests-list">
+                        <div class="request-card">
+                            <div class="request-user">
+                                <img src="https://i.pravatar.cc/150?img=12" alt="User" class="request-avatar">
+                                <div class="request-info">
+                                    <h4>Rahul Verma</h4>
+                                    <div class="request-meta">
+                                        <span style="color: var(--secondary);">★★★★★</span> 5.0
+                                    </div>
+                                    <p style="color: var(--text-secondary); margin-top: 0.5rem;">
+                                        "Excellent teacher! Very patient and knowledgeable about React.js. Highly recommended!"
+                                    </p>
+                                </div>
+                            </div>
+                            <span style="color: var(--text-tertiary); font-size: 0.85rem;">2 days ago</span>
+                        </div>
+
+                        <div class="request-card">
+                            <div class="request-user">
+                                <img src="https://i.pravatar.cc/150?img=33" alt="User" class="request-avatar">
+                                <div class="request-info">
+                                    <h4>Arjun Mehta</h4>
+                                    <div class="request-meta">
+                                        <span style="color: var(--secondary);">★★★★★</span> 5.0
+                                    </div>
+                                    <p style="color: var(--text-secondary); margin-top: 0.5rem;">
+                                        "Great experience learning web development. Clear explanations and practical examples."
+                                    </p>
+                                </div>
+                            </div>
+                            <span style="color: var(--text-tertiary); font-size: 0.85rem;">1 week ago</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Settings Tab -->
+            <div class="tab-content" id="settings">
+                <div class="dashboard-header">
+                    <h1>Settings</h1>
+                </div>
+
+                <div class="profile-section">
+                    <h3 class="section-title">Account Settings</h3>
+                    <form style="display: flex; flex-direction: column; gap: 1.5rem;">
+                        <div class="form-group">
+                            <label>Full Name</label>
+                            <input type="text" value="Priya Sharma">
+                        </div>
+                        <div class="form-group">
+                            <label>Email</label>
+                            <input type="email" value="priya.sharma@email.com">
+                        </div>
+                        <div class="form-group">
+                            <label>Location</label>
+                            <input type="text" value="Bhopal, India">
+                        </div>
+                        <button type="submit" class="btn btn-primary" style="width: fit-content;">Save Changes</button>
+                    </form>
+                </div>
+
+                <div class="profile-section">
+                    <h3 class="section-title">Notification Preferences</h3>
+                    <div style="display: flex; flex-direction: column; gap: 1rem;">
+                        <label class="checkbox">
+                            <input type="checkbox" checked>
+                            <span>Email notifications for new requests</span>
+                        </label>
+                        <label class="checkbox">
+                            <input type="checkbox" checked>
+                            <span>Email notifications for messages</span>
+                        </label>
+                        <label class="checkbox">
+                            <input type="checkbox">
+                            <span>Weekly summary emails</span>
+                        </label>
+                        <label class="checkbox">
+                            <input type="checkbox" checked>
+                            <span>Push notifications</span>
+                        </label>
+                    </div>
+                </div>
+
+                <div class="profile-section">
+                    <h3 class="section-title">Privacy Settings</h3>
+                    <div style="display: flex; flex-direction: column; gap: 1rem;">
+                        <label class="checkbox">
+                            <input type="checkbox" checked>
+                            <span>Show my profile in search results</span>
+                        </label>
+                        <label class="checkbox">
+                            <input type="checkbox" checked>
+                            <span>Allow others to send me requests</span>
+                        </label>
+                        <label class="checkbox">
+                            <input type="checkbox">
+                            <span>Display my location publicly</span>
+                        </label>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <div class="toast" id="toast">
+        <i class="fas fa-check-circle"></i>
+        <span id="toastMessage"></span>
+    </div>
+
+    <script src="script.js"></script>
+    <script>
+        // Sample request data
+        const requestsData = {
+            received: [
+                {
+                    id: 1,
+                    user: 'Rahul Verma',
+                    avatar: 'https://i.pravatar.cc/150?img=12',
+                    skillWanted: 'Web Development',
+                    skillOffered: 'Graphic Design',
+                    status: 'pending',
+                    time: '2 hours ago'
+                },
+                {
+                    id: 2,
+                    user: 'Ananya Patel',
+                    avatar: 'https://i.pravatar.cc/150?img=9',
+                    skillWanted: 'React.js',
+                    skillOffered: 'Spanish Language',
+                    status: 'pending',
+                    time: '5 hours ago'
+                },
+                {
+                    id: 3,
+                    user: 'Vikram Singh',
+                    avatar: 'https://i.pravatar.cc/150?img=15',
+                    skillWanted: 'Node.js Backend',
+                    skillOffered: 'Digital Marketing',
+                    status: 'pending',
+                    time: '1 day ago'
+                }
+            ],
+            sent: [
+                {
+                    id: 4,
+                    user: 'Sneha Gupta',
+                    avatar: 'https://i.pravatar.cc/150?img=20',
+                    skillWanted: 'Photography',
+                    skillOffered: 'Web Development',
+                    status: 'accepted',
+                    time: '3 days ago'
+                },
+                {
+                    id: 5,
+                    user: 'Arjun Mehta',
+                    avatar: 'https://i.pravatar.cc/150?img=33',
+                    skillWanted: 'UI/UX Design',
+                    skillOffered: 'JavaScript',
+                    status: 'pending',
+                    time: '4 days ago'
+                }
+            ]
+        };
+
+        // Render requests
+        function renderRequests(container, requests, showActions = false) {
+            const html = requests.map(req => `
+                <div class="request-card">
+                    <div class="request-user">
+                        <img src="${req.avatar}" alt="${req.user}" class="request-avatar">
+                        <div class="request-info">
+                            <h4>${req.user}</h4>
+                            <div class="request-meta">
+                                Wants: <strong>${req.skillWanted}</strong> | Offers: <strong>${req.skillOffered}</strong>
+                            </div>
+                            <p style="color: var(--text-tertiary); font-size: 0.85rem; margin-top: 0.25rem;">${req.time}</p>
+                        </div>
+                    </div>
+                    <div class="request-actions">
+                        <span class="status-badge status-${req.status}">${req.status.charAt(0).toUpperCase() + req.status.slice(1)}</span>
+                        ${showActions && req.status === 'pending' ? `
+                            <button class="btn-icon accept" onclick="handleRequest(${req.id}, 'accept')">
+                                <i class="fas fa-check"></i>
+                            </button>
+                            <button class="btn-icon decline" onclick="handleRequest(${req.id}, 'decline')">
+                                <i class="fas fa-times"></i>
+                            </button>
+                        ` : ''}
+                    </div>
+                </div>
+            `).join('');
+            
+            document.getElementById(container).innerHTML = html;
+        }
+
+        // Handle request action
+        window.handleRequest = function(id, action) {
+            const actionText = action === 'accept' ? 'accepted' : 'declined';
+            showToast(`Request ${actionText} successfully!`, 'success');
+            
+            // Update UI (in real app, this would update the database)
+            setTimeout(() => {
+                renderRequests('receivedRequests', requestsData.received.filter(r => r.status === 'pending'), true);
+            }, 500);
+        };
+
+        // Tab switching
+        document.querySelectorAll('.sidebar-item').forEach(item => {
+            item.addEventListener('click', (e) => {
+                e.preventDefault();
+                const tab = item.getAttribute('data-tab');
+                
+                // Update active states
+                document.querySelectorAll('.sidebar-item').forEach(i => i.classList.remove('active'));
+                item.classList.add('active');
+                
+                // Show selected tab content
+                document.querySelectorAll('.tab-content').forEach(content => {
+                    content.classList.remove('active');
+                    content.style.display = 'none';
+                });
+                
+                const activeContent = document.getElementById(tab);
+                activeContent.style.display = 'block';
+                activeContent.classList.add('active');
+            });
+        });
+
+        // Initial render
+        renderRequests('recentRequests', requestsData.received.slice(0, 3), true);
+        renderRequests('receivedRequests', requestsData.received, true);
+        renderRequests('sentRequests', requestsData.sent, false);
+
+        // Show only overview tab initially
+        document.querySelectorAll('.tab-content').forEach((content, index) => {
+            if (index !== 0) content.style.display = 'none';
+        });
+    </script>
+</body>
+</html>
