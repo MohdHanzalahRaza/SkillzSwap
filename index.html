@@ -46,17 +46,22 @@
     <!-- Navigation -->
     <nav class="navbar" id="navbar">
       <div class="nav-container">
-        <div class="nav-logo" onclick="window.location.href='index.html'" style="cursor: pointer;">
+        <div
+          class="nav-logo"
+          onclick="window.location.href='index.html'"
+          style="cursor: pointer"
+        >
           <i class="fas fa-sync-alt"></i>
           <span>SwapSkillz</span>
         </div>
 
         <div class="nav-menu" id="navMenu">
-          <a href="index.html" class="nav-link active">Home</a>
-          <a href="browse.html" class="nav-link">Browse Skills</a>
-          <a href="about.html" class="nav-link">About</a>
-          <a href="how-it-works.html" class="nav-link">How It Works</a>
-          <a href="contact.html" class="nav-link">Contact</a>
+          <a href="#home" class="nav-link active">Home</a>
+          <a href="#how-it-works" class="nav-link">How It Works</a>
+          <a href="#browse-skills" class="nav-link">Browse Skills</a>
+          <a href="#about" class="nav-link">About</a>
+          <a href="#testimonials" class="nav-link">Testimonials</a>
+          <a href="#contact" class="nav-link">Contact</a>
         </div>
 
         <div class="nav-actions">
@@ -196,8 +201,8 @@
         </div>
 
         <div class="text-center" data-aos="fade-up">
-          <button class="btn btn-outline" onclick="window.location.href='browse.html'">
-            View All Skills
+          <button class="btn btn-outline" id="loadMoreSkills">
+            Load More Skills
           </button>
         </div>
       </div>
@@ -234,7 +239,12 @@
               </div>
             </div>
 
-            <button class="btn btn-primary" onclick="window.location.href='about.html'">Learn More</button>
+            <button
+              class="btn btn-primary"
+              onclick="window.location.href='about.html'"
+            >
+              Learn More
+            </button>
           </div>
 
           <div class="about-image" data-aos="fade-left">
@@ -286,8 +296,15 @@
             Join thousands of learners and teachers today. It's free!
           </p>
           <div class="cta-buttons">
-            <button class="btn btn-primary btn-large" id="signupBtn">Get Started Free</button>
-            <button class="btn btn-outline btn-large" onclick="window.location.href='how-it-works.html'">Learn How It Works</button>
+            <button class="btn btn-primary btn-large" id="signupBtn">
+              Get Started Free
+            </button>
+            <button
+              class="btn btn-outline btn-large"
+              onclick="window.location.href='how-it-works.html'"
+            >
+              Learn How It Works
+            </button>
           </div>
         </div>
       </div>
