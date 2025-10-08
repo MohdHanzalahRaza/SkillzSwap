@@ -1,0 +1,586 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>How It Works - SkillzSwap</title>
+    
+    <meta name="description" content="Learn how to start swapping skills on SkillzSwap. Simple 4-step process to begin learning and teaching.">
+    
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.css" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+    
+    <style>
+        .page-hero {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 120px 0 80px;
+            text-align: center;
+        }
+        
+        .page-hero h1 {
+            font-size: clamp(2.5rem, 5vw, 4rem);
+            margin-bottom: var(--space-lg);
+        }
+        
+        .steps-timeline {
+            padding: var(--space-3xl) 0;
+            position: relative;
+        }
+        
+        .timeline-container {
+            max-width: 1000px;
+            margin: 0 auto;
+            position: relative;
+        }
+        
+        .timeline-line {
+            position: absolute;
+            left: 50%;
+            top: 0;
+            bottom: 0;
+            width: 4px;
+            background: linear-gradient(180deg, var(--primary), var(--secondary));
+            transform: translateX(-50%);
+            z-index: 0;
+        }
+        
+        .timeline-step {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: var(--space-3xl);
+            margin-bottom: var(--space-3xl);
+            position: relative;
+        }
+        
+        .timeline-step:nth-child(even) .step-content {
+            grid-column: 2;
+        }
+        
+        .timeline-step:nth-child(even) .step-visual {
+            grid-column: 1;
+            grid-row: 1;
+        }
+        
+        .step-number {
+            position: absolute;
+            left: 50%;
+            top: 50%;
+            transform: translate(-50%, -50%);
+            width: 80px;
+            height: 80px;
+            background: var(--bg-primary);
+            border: 4px solid var(--primary);
+            border-radius: var(--radius-full);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--primary);
+            z-index: 2;
+            box-shadow: var(--shadow-lg);
+        }
+        
+        .step-content {
+            background: var(--bg-primary);
+            padding: var(--space-2xl);
+            border-radius: var(--radius-xl);
+            box-shadow: var(--shadow);
+        }
+        
+        .step-content h3 {
+            font-size: 1.75rem;
+            margin-bottom: var(--space-md);
+            color: var(--primary);
+        }
+        
+        .step-content p {
+            color: var(--text-secondary);
+            line-height: 1.8;
+            margin-bottom: var(--space-md);
+        }
+        
+        .step-features {
+            list-style: none;
+            padding: 0;
+        }
+        
+        .step-features li {
+            padding: var(--space-sm) 0;
+            display: flex;
+            align-items: center;
+            gap: var(--space-sm);
+        }
+        
+        .step-features i {
+            color: var(--accent);
+        }
+        
+        .step-visual {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .visual-box {
+            width: 100%;
+            height: 300px;
+            background: linear-gradient(135deg, var(--primary-light), var(--primary));
+            border-radius: var(--radius-xl);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 5rem;
+            color: white;
+            box-shadow: var(--shadow-xl);
+        }
+        
+        .faq-section {
+            background: var(--bg-secondary);
+            padding: var(--space-3xl) 0;
+        }
+        
+        .faq-container {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        
+        .faq-item {
+            background: var(--bg-primary);
+            margin-bottom: var(--space-lg);
+            border-radius: var(--radius-lg);
+            overflow: hidden;
+            box-shadow: var(--shadow);
+        }
+        
+        .faq-question {
+            padding: var(--space-lg);
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-weight: 600;
+            font-size: 1.1rem;
+            transition: var(--transition);
+        }
+        
+        .faq-question:hover {
+            background: var(--bg-tertiary);
+        }
+        
+        .faq-question i {
+            transition: var(--transition);
+        }
+        
+        .faq-item.active .faq-question i {
+            transform: rotate(180deg);
+        }
+        
+        .faq-answer {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease;
+        }
+        
+        .faq-item.active .faq-answer {
+            max-height: 500px;
+        }
+        
+        .faq-answer-content {
+            padding: 0 var(--space-lg) var(--space-lg);
+            color: var(--text-secondary);
+            line-height: 1.8;
+        }
+        
+        @media (max-width: 968px) {
+            .timeline-line {
+                left: 30px;
+            }
+            
+            .timeline-step {
+                grid-template-columns: 1fr;
+                padding-left: 80px;
+            }
+            
+            .timeline-step:nth-child(even) .step-content,
+            .timeline-step:nth-child(even) .step-visual {
+                grid-column: 1;
+            }
+            
+            .step-number {
+                left: 30px;
+            }
+            
+            .step-visual {
+                order: -1;
+            }
+        }
+    </style>
+</head>
+<body>
+    <button class="theme-toggle" id="themeToggle">
+        <i class="fas fa-moon"></i>
+    </button>
+
+    <!-- Navigation -->
+    <nav class="navbar" id="navbar">
+        <div class="nav-container">
+            <div class="nav-logo" onclick="window.location.href='index.html'">
+                <i class="fas fa-sync-alt"></i>
+                <span>SkillzSwap</span>
+            </div>
+            
+            <div class="nav-menu" id="navMenu">
+                <a href="index.html" class="nav-link">Home</a>
+                <a href="browse.html" class="nav-link">Browse Skills</a>
+                <a href="about.html" class="nav-link">About</a>
+                <a href="how-it-works.html" class="nav-link active">How It Works</a>
+                <a href="contact.html" class="nav-link">Contact</a>
+            </div>
+
+            <div class="nav-actions">
+                <button class="btn btn-outline" id="loginBtn">Login</button>
+                <button class="btn btn-primary" id="signupBtn">Sign Up</button>
+            </div>
+
+            <button class="nav-toggle" id="navToggle">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
+        </div>
+    </nav>
+
+    <!-- Page Hero -->
+    <section class="page-hero">
+        <div class="container">
+            <div class="page-hero-content" data-aos="fade-up">
+                <h1>How SkillzSwap Works</h1>
+                <p>Start learning and teaching in 4 simple steps</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Timeline Steps -->
+    <section class="steps-timeline">
+        <div class="container">
+            <div class="timeline-container">
+                <div class="timeline-line"></div>
+
+                <!-- Step 1 -->
+                <div class="timeline-step" data-aos="fade-up">
+                    <div class="step-content">
+                        <h3>1. Create Your Profile</h3>
+                        <p>
+                            Sign up for free and create your profile in minutes. Tell us about yourself, 
+                            the skills you can teach, and what you'd like to learn.
+                        </p>
+                        <ul class="step-features">
+                            <li><i class="fas fa-check"></i> Free account creation</li>
+                            <li><i class="fas fa-check"></i> Add skills you can teach</li>
+                            <li><i class="fas fa-check"></i> List skills you want to learn</li>
+                            <li><i class="fas fa-check"></i> Set your availability</li>
+                            <li><i class="fas fa-check"></i> Upload profile picture</li>
+                        </ul>
+                    </div>
+                    <div class="step-visual">
+                        <div class="visual-box">
+                            <i class="fas fa-user-plus"></i>
+                        </div>
+                    </div>
+                    <div class="step-number">01</div>
+                </div>
+
+                <!-- Step 2 -->
+                <div class="timeline-step" data-aos="fade-up">
+                    <div class="step-content">
+                        <h3>2. Find Your Match</h3>
+                        <p>
+                            Browse through our community of skilled individuals. Use filters to find people 
+                            who have the skills you want and need the skills you offer.
+                        </p>
+                        <ul class="step-features">
+                            <li><i class="fas fa-check"></i> Search by skill category</li>
+                            <li><i class="fas fa-check"></i> Filter by rating and location</li>
+                            <li><i class="fas fa-check"></i> View detailed profiles</li>
+                            <li><i class="fas fa-check"></i> Read reviews from others</li>
+                            <li><i class="fas fa-check"></i> See verified users</li>
+                        </ul>
+                    </div>
+                    <div class="step-visual">
+                        <div class="visual-box">
+                            <i class="fas fa-search"></i>
+                        </div>
+                    </div>
+                    <div class="step-number">02</div>
+                </div>
+
+                <!-- Step 3 -->
+                <div class="timeline-step" data-aos="fade-up">
+                    <div class="step-content">
+                        <h3>3. Connect & Schedule</h3>
+                        <p>
+                            Send a swap request to your ideal match. Once accepted, coordinate schedules 
+                            and agree on how you'll exchange skills.
+                        </p>
+                        <ul class="step-features">
+                            <li><i class="fas fa-check"></i> Send personalized requests</li>
+                            <li><i class="fas fa-check"></i> Chat with potential partners</li>
+                            <li><i class="fas fa-check"></i> Schedule sessions</li>
+                            <li><i class="fas fa-check"></i> Choose online or in-person</li>
+                            <li><i class="fas fa-check"></i> Set clear expectations</li>
+                        </ul>
+                    </div>
+                    <div class="step-visual">
+                        <div class="visual-box">
+                            <i class="fas fa-calendar-check"></i>
+                        </div>
+                    </div>
+                    <div class="step-number">03</div>
+                </div>
+
+                <!-- Step 4 -->
+                <div class="timeline-step" data-aos="fade-up">
+                    <div class="step-content">
+                        <h3>4. Learn, Teach & Grow</h3>
+                        <p>
+                            Start your skill exchange! Attend sessions, share knowledge, and grow together. 
+                            After completion, leave reviews to help build trust in the community.
+                        </p>
+                        <ul class="step-features">
+                            <li><i class="fas fa-check"></i> Attend learning sessions</li>
+                            <li><i class="fas fa-check"></i> Share your expertise</li>
+                            <li><i class="fas fa-check"></i> Track your progress</li>
+                            <li><i class="fas fa-check"></i> Leave honest reviews</li>
+                            <li><i class="fas fa-check"></i> Build your reputation</li>
+                        </ul>
+                    </div>
+                    <div class="step-visual">
+                        <div class="visual-box">
+                            <i class="fas fa-graduation-cap"></i>
+                        </div>
+                    </div>
+                    <div class="step-number">04</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- FAQ Section -->
+    <section class="faq-section">
+        <div class="container">
+            <div class="section-header" data-aos="fade-up">
+                <h2 class="section-title">Frequently Asked Questions</h2>
+                <p class="section-subtitle">Got questions? We've got answers</p>
+            </div>
+
+            <div class="faq-container">
+                <div class="faq-item" data-aos="fade-up">
+                    <div class="faq-question">
+                        <span>Is SkillzSwap really free?</span>
+                        <i class="fas fa-chevron-down"></i>
+                    </div>
+                    <div class="faq-answer">
+                        <div class="faq-answer-content">
+                            Yes! SkillzSwap is 100% free with no hidden costs or subscription fees. 
+                            We believe education should be accessible to everyone. Our platform is 
+                            supported by the community and we're committed to keeping it free forever.
+                        </div>
+                    </div>
+                </div>
+
+                <div class="faq-item" data-aos="fade-up">
+                    <div class="faq-question">
+                        <span>How do I know if someone is qualified?</span>
+                        <i class="fas fa-chevron-down"></i>
+                    </div>
+                    <div class="faq-answer">
+                        <div class="faq-answer-content">
+                            Every user has a profile with reviews and ratings from previous skill swaps. 
+                            We also have a verification system for users who want to prove their credentials. 
+                            You can read reviews, check ratings, and even chat with potential partners before committing.
+                        </div>
+                    </div>
+                </div>
+
+                <div class="faq-item" data-aos="fade-up">
+                    <div class="faq-question">
+                        <span>What if I don't have any skills to offer?</span>
+                        <i class="fas fa-chevron-down"></i>
+                    </div>
+                    <div class="faq-answer">
+                        <div class="faq-answer-content">
+                            Everyone has valuable skills! It could be anything from cooking, gardening, 
+                            language skills, music, sports, or even life experiences. Think about what 
+                            comes naturally to you - that's your skill. We encourage everyone to both 
+                            teach and learn.
+                        </div>
+                    </div>
+                </div>
+
+                <div class="faq-item" data-aos="fade-up">
+                    <div class="faq-question">
+                        <span>Can I swap skills online or does it have to be in person?</span>
+                        <i class="fas fa-chevron-down"></i>
+                    </div>
+                    <div class="faq-answer">
+                        <div class="faq-answer-content">
+                            Both! You can choose to swap skills online via video calls or in person at a 
+                            location of your choice. Many of our users prefer online swaps for convenience, 
+                            but in-person sessions work great for hands-on skills like cooking or sports.
+                        </div>
+                    </div>
+                </div>
+
+                <div class="faq-item" data-aos="fade-up">
+                    <div class="faq-question">
+                        <span>How long does a typical skill swap take?</span>
+                        <i class="fas fa-chevron-down"></i>
+                    </div>
+                    <div class="faq-answer">
+                        <div class="faq-answer-content">
+                            It varies! Some skills can be taught in a single 1-hour session, while others 
+                            might need multiple sessions over weeks or months. You and your swap partner 
+                            agree on the duration and frequency that works for both of you.
+                        </div>
+                    </div>
+                </div>
+
+                <div class="faq-item" data-aos="fade-up">
+                    <div class="faq-question">
+                        <span>What if I want to cancel a swap?</span>
+                        <i class="fas fa-chevron-down"></i>
+                    </div>
+                    <div class="faq-answer">
+                        <div class="faq-answer-content">
+                            Life happens! You can cancel or reschedule sessions by communicating with your 
+                            swap partner. We encourage clear communication and mutual respect. If there's 
+                            a serious issue, our support team is here to help resolve conflicts.
+                        </div>
+                    </div>
+                </div>
+
+                <div class="faq-item" data-aos="fade-up">
+                    <div class="faq-question">
+                        <span>Is my personal information safe?</span>
+                        <i class="fas fa-chevron-down"></i>
+                    </div>
+                    <div class="faq-answer">
+                        <div class="faq-answer-content">
+                            Absolutely! We take privacy and security very seriously. Your personal information 
+                            is encrypted and never shared without your permission. We comply with all data 
+                            protection regulations and you have full control over what information you share.
+                        </div>
+                    </div>
+                </div>
+
+                <div class="faq-item" data-aos="fade-up">
+                    <div class="faq-question">
+                        <span>Can I swap multiple skills at once?</span>
+                        <i class="fas fa-chevron-down"></i>
+                    </div>
+                    <div class="faq-answer">
+                        <div class="faq-answer-content">
+                            Yes! You can have multiple active swaps with different people at the same time. 
+                            Many users teach several skills while learning others. There's no limit to how 
+                            many swaps you can participate in.
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA Section -->
+    <section class="cta">
+        <div class="container">
+            <div class="cta-content" data-aos="zoom-in">
+                <h2 class="cta-title">Ready to Get Started?</h2>
+                <p class="cta-subtitle">Join thousands of learners and teachers today!</p>
+                <div class="cta-buttons">
+                    <button class="btn btn-primary btn-large" onclick="window.location.href='index.html#signup'">Sign Up Now</button>
+                    <button class="btn btn-outline btn-large" onclick="window.location.href='browse.html'">Browse Skills</button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <div class="footer-logo">
+                        <i class="fas fa-sync-alt"></i>
+                        <span>SkillzSwap</span>
+                    </div>
+                    <p class="footer-description">
+                        Empowering communities through skill exchange.
+                    </p>
+                </div>
+
+                <div class="footer-section">
+                    <h4 class="footer-title">Quick Links</h4>
+                    <ul class="footer-links">
+                        <li><a href="index.html">Home</a></li>
+                        <li><a href="about.html">About</a></li>
+                        <li><a href="how-it-works.html">How It Works</a></li>
+                        <li><a href="browse.html">Browse</a></li>
+                    </ul>
+                </div>
+
+                <div class="footer-section">
+                    <h4 class="footer-title">Support</h4>
+                    <ul class="footer-links">
+                        <li><a href="contact.html">Contact</a></li>
+                        <li><a href="#">FAQ</a></li>
+                        <li><a href="#">Help</a></li>
+                    </ul>
+                </div>
+
+                <div class="footer-section">
+                    <h4 class="footer-title">Newsletter</h4>
+                    <form class="newsletter-form">
+                        <input type="email" placeholder="Your email" required>
+                        <button type="submit" class="btn btn-primary">Subscribe</button>
+                    </form>
+                </div>
+            </div>
+
+            <div class="footer-bottom">
+                <p>&copy; 2024 SkillzSwap. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <div class="toast" id="toast">
+        <i class="fas fa-check-circle"></i>
+        <span id="toastMessage"></span>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.js"></script>
+    <script src="script.js"></script>
+    <script>
+        // FAQ Accordion
+        document.querySelectorAll('.faq-question').forEach(question => {
+            question.addEventListener('click', () => {
+                const faqItem = question.parentElement;
+                const isActive = faqItem.classList.contains('active');
+                
+                // Close all FAQs
+                document.querySelectorAll('.faq-item').forEach(item => {
+                    item.classList.remove('active');
+                });
+                
+                // Open clicked FAQ if it wasn't active
+                if (!isActive) {
+                    faqItem.classList.add('active');
+                }
+            });
+        });
+    </script>
+</body>
+</html>
